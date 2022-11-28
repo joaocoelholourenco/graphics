@@ -44,7 +44,11 @@ export function FileUpload({ setData, label }: FileUploadProps) {
   };
 
   return (
-    <div className="container">
+    <div
+      className={`container ${
+        label === "Java" ? "pink-border" : "blue-border"
+      } `}
+    >
       <input type="file" name="file" onChange={changeHandler} />
       {isSelected ? (
         <div>
