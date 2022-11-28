@@ -1,0 +1,6 @@
+.container {
+  border: 2px dashed #333;
+  padding: 2rem;
+  border-radius: 8px;
+  color: #888;
+}
