@@ -12,6 +12,7 @@ export type DataChart = {
 };
 
 function App() {
+  const [multipleOptions, setMultipleOptions] = useState<Boolean>(false);
   const [javaData, setJavaData] = useState<DataChart>({
     label: "Java",
     borderColor: "rgb(255, 99, 132)",
@@ -28,26 +29,44 @@ function App() {
       <div>
         <LineChart data={[javaData, cData]} />
       </div>
-      <div className="uploads-container">
-        <FileUpload label="Java" setData={setJavaData} />
-        <FileUpload label="C" setData={setCData} />
+      <div>
+        <input
+          type="checkbox"
+          name="Upar arquivos separados"
+          id="upload"
+          onChange={() => {
+            setMultipleOptions(!multipleOptions);
+          }}
+        />
+        <span>Upar arquivos separados</span>
       </div>
+      {!multipleOptions ? (
+        <div className="container-upload">
+          <FileUpload label="seu computador" setData={setJavaData} />
+        </div>
+      ) : (
+        <div className="container-upload">
+          <FileUpload label="C" setData={setCData} />
+          <FileUpload label="Java" setData={setJavaData} />
+        </div>
+      )}
+
       <h1>Test-t</h1>
       <h1>Resultados Pareados</h1>
 
       <div>
-        {javaData.data && cData.data.length ? (
+        {javaData.data && cData.data?.length ? (
           <div>
             <p>Java - C</p>
             {javaData.data.map((value, idx) => (
-              <p>
+              <p key={value}>
                 {value} - {cData.data[idx]}
               </p>
             ))}
           </div>
         ) : (
           <div>
-            <p>Selecione os dois arquivos txt dos resultados</p>
+            <p>Selecione arquivos dos resultados</p>
           </div>
         )}
       </div>

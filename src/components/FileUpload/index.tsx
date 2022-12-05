@@ -15,9 +15,10 @@ export function FileUpload({ setData, label }: FileUploadProps) {
   const [selectedFile, setSelectedFile] = useState<FileType>({} as FileType);
   const [text, setText] = useState("");
   const [isSelected, setIsSelected] = useState<Boolean>(false);
-  const [isFilePicked, setIsFilePicked] = useState(false);
 
   useEffect(() => {
+    console.log(text);
+    console.log(selectedFile);
     const array = text
       .split(/\r?\n/)
       .map((a) => Number(a))
@@ -32,6 +33,7 @@ export function FileUpload({ setData, label }: FileUploadProps) {
 
   const changeHandler = (event: any) => {
     event.preventDefault();
+    console.log(event.target?.result);
     const reader = new FileReader();
     reader.onload = async (event) => {
       const text = event.target?.result?.toString() || "";
@@ -40,6 +42,7 @@ export function FileUpload({ setData, label }: FileUploadProps) {
     reader.readAsText(event.target.files[0]);
     setSelectedFile(event.target.files[0]);
 
+    console.log(event.target.files[0]);
     setIsSelected(true);
   };
 
