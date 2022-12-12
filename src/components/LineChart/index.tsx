@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,7 +26,7 @@ export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: "top" as const,
+      position: "bottom" as const,
     },
   },
 };
@@ -48,15 +48,16 @@ export let initialData = {
   labels,
   datasets: [
     {
-      label: "Java",
-      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      label: "Insira o arquivo de resuldado",
+      data: [0],
 
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
     },
     {
-      label: "C",
-      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      label: "Insira o arquivo de resuldado",
+      data: [0],
+
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
     },
@@ -70,14 +71,18 @@ interface LineChartProps {
 export function LineChart({ data }: LineChartProps) {
   const [dataChart, setDataChart] = useState(initialData);
 
-  useEffect(() => {
+  useMemo(() => {
+    if (!data.length) {
+      setDataChart(initialData);
+      return;
+    }
     setDataChart((prev) => ({
       ...prev,
-      datasets: data,
-      labels: data[0].data?.map((arr, idx) => idx.toString()),
+      datasets: prev.datasets.map((dataset, idx) => {
+        return { ...dataset, data: data[idx]?.data, label: data[idx]?.label };
+      }),
+      labels: data[0]?.data?.map((arr, idx) => "Rodada " + (idx + 1)),
     }));
-
-    console.log(data);
   }, [data]);
 
   return <Line options={options} data={dataChart} height={450} width={750} />;
